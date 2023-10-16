@@ -5,25 +5,25 @@
 * Use pipenv in the root to prepare the requirements.txt
 
 ### Create virtual environment
-``pipenv shell``
+``$ pipenv shell``
 
-### Install packages
-``pipenv install {package-name}``
+### Install package(s)
+``$ pipenv install {package-name}``
 
 ### Create requirements.txt
-``pipenv requirements > requirements.txt``
+``$ pipenv requirements > requirements.txt``
 
 ## Docker Compose
 
 ### Start Docker Containers
-``docker compose [--build] up -d``
+``$ docker compose up -d [--build]``
 
-Options:
---build     to build the container
--d          for detached
+Options:<br>
+``-d``          for detached<br>
+``--build``     to build the container
 
 ### Stop Docker Containers
-``docker compose down``
+``$ docker compose down``
 
 ### Enter Container
-``docker exec -it {container-name} [sh|bash]``
+``$ docker exec -it {container-name} [sh|bash]``
