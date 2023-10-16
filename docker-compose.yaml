@@ -1,0 +1,82 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: project-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT_OUT}:5432
+    volumes:
+      - project-data:/var/lib/postgresql/data
+    networks:
+      project-name:
+        ipv4_address: 172.16.0.39
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: project-redis
+    restart: unless-stopped
+    ports:
+      - ${REDIS_PORT_OUT}:6379
+    networks:
+      project-name:
+        ipv4_address: 172.16.0.2
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: project-mailhog
+    restart: unless-stopped
+    logging:
+      driver: 'none'  # disable saving logs
+    ports:
+      - 1025:1025 # smtp server
+      - 8025:8025 # web api
+    networks:
+      project-name:
+        ipv4_address: 172.16.0.3
+
+  webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Use user id & group id in .env
+        USER_ID: ${USER_ID:-0}
+        GROUP_ID: ${GROUP_ID:-0}
+    user: ${USER_ID}:${GROUP_ID}
+    container_name: project-webapi
+    command: bash -c "uvicorn main:app --host=0.0.0.0 --port=8000 --reload"
+    restart: unless-stopped
+    #env_file:
+    # - ./src/.env
+    volumes:
+      - ./src:/app
+      # Set the logins and groups identical to host environment
+      - /etc/group:/etc/group:ro
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/shadow:/etc/shadow:ro
+    ports:
+      - ${WEBAPI_OUT}:8000
+      - 5678:5678 # For debugging
+    networks:
+      project-name:
+        ipv4_address: 172.16.0.11
+    depends_on:
+      - postgres
+      - redis
+
+volumes:
+ project-data:
+
+networks:
+  project-name:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.0.0/16
+          gateway: 172.16.0.1
