@@ -2,7 +2,7 @@
     main.py
 """
 # Third Party Imports
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 # Built-in Imports
 import logging
@@ -10,6 +10,10 @@ import logging
 
 
 logger = logging.getLogger(__name__)
+
+def get_name() -> str:
+    """"""
+    return "Jane Doe"
 
 try:
     app = FastAPI()
@@ -24,8 +28,8 @@ try:
                        allow_headers=["*"])
     
     @app.get("/", tags=['index'])
-    async def root():
-        return {"server": "alive"}
+    async def root(name: str=Depends(get_name)):
+        return {"server": "alive", "name": name}
     
     # Setup routes
 
