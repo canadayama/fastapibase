@@ -30,6 +30,6 @@ Options:<br>
 
 ## Pytest
 
-* Run in src
+* Run in app
 
 ``$ pytest -v -s``

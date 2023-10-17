@@ -1,6 +1,9 @@
+"""
+    tests package
+"""
 from fastapi.testclient import TestClient
-from ..main import app, get_name
-from ..config import Settings
+from main import app, get_name
+from config import Settings
 
 def get_my_name():
     """"""

@@ -7,9 +7,10 @@ from fastapi.middleware.cors import CORSMiddleware
 # Built-in Imports
 import logging
 # Relative Imports
-
+from config.settings import Settings
 
 logger = logging.getLogger(__name__)
+
 
 def get_name() -> str:
     """"""
@@ -37,6 +38,7 @@ try:
     def in_startup():
         """Handles on startup event."""
         logger.info("Starting...")
+        print(Settings().model_dump())
     @app.on_event('shutdown')
     def on_shutdown():
         """Handles on shutdown event."""

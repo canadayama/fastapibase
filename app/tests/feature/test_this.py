@@ -1,6 +1,6 @@
 from fastapi import status
 from unittest import TestCase
-from ...tests import client
+from tests import client
 
 def test_root():
     """"""
