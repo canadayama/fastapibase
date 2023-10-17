@@ -15,6 +15,7 @@ redis = "*"
 sqlalchemy = "*"
 sqlalchemy-utils = "*"
 uvicorn = "*"
+pydantic-settings = "*"
 
 [dev-packages]
 
