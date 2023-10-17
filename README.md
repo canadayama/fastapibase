@@ -27,3 +27,9 @@ Options:<br>
 
 ### Enter Container
 ``$ docker exec -it {container-name} [sh|bash]``
+
+## Pytest
+
+* Run in src
+
+``$ pytest -v -s``
